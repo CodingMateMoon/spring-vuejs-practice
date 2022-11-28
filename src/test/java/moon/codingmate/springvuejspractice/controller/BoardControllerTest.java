@@ -40,7 +40,6 @@ class BoardControllerTest {
 //                        .param("title", "업데이트 공지")
 //                        .param("content", "내용")
                        .content("{\"title\": \"제목입니다.\", \"content\": \"내용입니다.\"}")
-                )
                 .andExpect(status().isOk())
                 .andExpect(content().string("getBoard"))
                 .andDo(MockMvcResultHandlers.print());
