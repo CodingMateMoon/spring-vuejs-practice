@@ -10,6 +10,8 @@ import lombok.ToString;
 @AllArgsConstructor
 @ToString
 public class BoardRequest {
+
+    @NotBlank
     String title;
     String content;
 }
