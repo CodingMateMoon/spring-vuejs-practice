@@ -44,4 +44,18 @@ class BoardControllerTest {
                 .andExpect(content().string("getBoard"))
                 .andDo(MockMvcResultHandlers.print());
     }
+
+    @Test
+    @DisplayName("content null 게시글 조회 요청")
+    void getBoard_nullContent() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.post("/board")
+//                        .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                        .contentType(MediaType.APPLICATION_JSON)
+//                        .param("title", "업데이트 공지")
+//                        .param("content", "내용")
+                        .content("{\"title\": \"제목입니다.\", \"content\": \"\"}"))
+                .andExpect(status().isBadRequest())
+//                .andExpect(content().string("getBoard"))
+                .andDo(MockMvcResultHandlers.print());
+    }
 }
