@@ -26,7 +26,7 @@ dependencies {
 group = 'moon.codingmate'
 version = '0.0.1-SNAPSHOT'
 description = 'spring-vuejs-practice'
-java.sourceCompatibility = JavaVersion.VERSION_1_8
+java.sourceCompatibility = JavaVersion.VERSION_1_9
 
 publishing {
     publications {
@@ -39,3 +39,4 @@ publishing {
 tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
 }
+targetCompatibility = JavaVersion.VERSION_1_9
