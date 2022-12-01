@@ -17,9 +17,9 @@ import javax.validation.constraints.NotBlank;
 public class BoardRequest {
 
 
-    @NotBlank
+    @NotBlank(message = "제목을 입력해주세요")
     String title;
 
-    @NotBlank
+    @NotBlank(message = "내용을 입력해주세요")
     String content;
 }

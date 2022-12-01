@@ -55,7 +55,8 @@ class BoardControllerTest {
 //                        .param("content", "내용")
                         .content("{\"title\": \"제목입니다.\", \"content\": \"\"}"))
                 .andExpect(status().isOk())
-                .andExpect(content().string("getBoard"))
+//                .andExpect(content().string("getBoard"))
+                .andExpect(jsonPath("$.content").value("내용을 입력해주세요"))
                 .andDo(MockMvcResultHandlers.print());
     }
 }
