@@ -21,8 +21,8 @@ public class BoardController {
         return "getBoard";
     }
 
-    @PostMapping("/board")
-    public Map<String, String> getBoard(@RequestBody @Valid BoardRequest boardRequest, BindingResult result) {
+    @PostMapping("/board_bindingResult")
+    public Map<String, String> getBoard_BindingResult(@RequestBody @Valid BoardRequest boardRequest, BindingResult result) {
         log.info("boardRequest={}", boardRequest);
         if (result.hasErrors()) {
             List<FieldError> fieldErrors = result.getFieldErrors();
@@ -34,6 +34,12 @@ public class BoardController {
             error.put(fieldName, errorMessage);
             return error;
         }
+        return Map.of();
+    }
+
+    @PostMapping("/board")
+    public Map<String, String> getBoard(@RequestBody @Valid BoardRequest boardRequest) {
+        log.info("boardRequest={}", boardRequest);
         return Map.of();
     }
 }

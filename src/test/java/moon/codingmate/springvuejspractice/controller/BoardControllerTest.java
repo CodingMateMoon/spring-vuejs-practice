@@ -48,7 +48,7 @@ class BoardControllerTest {
     @Test
     @DisplayName("content null 게시글 조회 요청")
     void getBoard_nullContent() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.post("/board")
+        mockMvc.perform(MockMvcRequestBuilders.post("/board_bindingResult")
 //                        .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                         .contentType(MediaType.APPLICATION_JSON)
 //                        .param("title", "업데이트 공지")
@@ -57,6 +57,20 @@ class BoardControllerTest {
                 .andExpect(status().isOk())
 //                .andExpect(content().string("getBoard"))
                 .andExpect(jsonPath("$.content").value("내용을 입력해주세요"))
+                .andDo(MockMvcResultHandlers.print());
+    }
+
+
+    @Test
+    @DisplayName("/posts 요청 시 title값은 필수입니다.")
+    void postTest() throws Exception {  // 가능하면 application/json을 권장합니다. (기존 application/x-www-form-urlencoded)
+
+        //expected
+        mockMvc.perform(MockMvcRequestBuilders.post("/board")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"title\": null, \"content\": \"내용입니다.\"}"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.title").value("타이틀을 입력해주세요"))
                 .andDo(MockMvcResultHandlers.print());
     }
 }
