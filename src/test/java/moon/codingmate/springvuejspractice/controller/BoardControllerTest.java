@@ -69,8 +69,8 @@ class BoardControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.post("/board")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"title\": null, \"content\": \"내용입니다.\"}"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.title").value("타이틀을 입력해주세요"))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.title").value("제목을 입력해주세요"))
                 .andDo(MockMvcResultHandlers.print());
     }
 }
