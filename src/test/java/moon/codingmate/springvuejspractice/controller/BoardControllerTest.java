@@ -70,7 +70,10 @@ class BoardControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"title\": null, \"content\": \"내용입니다.\"}"))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.title").value("제목을 입력해주세요"))
+//                .andExpect(jsonPath("$.title").value("제목을 입력해주세요"))
+                .andExpect(jsonPath("$.code").value("400"))
+                .andExpect(jsonPath("$.message").value("잘못된 요청입니다."))
                 .andDo(MockMvcResultHandlers.print());
     }
+
 }
