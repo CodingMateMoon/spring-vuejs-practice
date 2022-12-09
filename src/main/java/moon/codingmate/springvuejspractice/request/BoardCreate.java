@@ -14,7 +14,7 @@ import javax.validation.constraints.NotBlank;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class BoardRequest {
+public class BoardCreate {
 
 
     @NotBlank(message = "제목을 입력해주세요")

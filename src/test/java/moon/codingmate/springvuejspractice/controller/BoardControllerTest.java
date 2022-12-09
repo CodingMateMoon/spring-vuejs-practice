@@ -73,6 +73,7 @@ class BoardControllerTest {
 //                .andExpect(jsonPath("$.title").value("제목을 입력해주세요"))
                 .andExpect(jsonPath("$.code").value("400"))
                 .andExpect(jsonPath("$.message").value("잘못된 요청입니다."))
+//                .andExpect(jsonPath("$.validation.title").value("타이틀을 입력해주세요."))
                 .andDo(MockMvcResultHandlers.print());
     }
 

@@ -1,7 +1,9 @@
 package moon.codingmate.springvuejspractice.controller;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import moon.codingmate.springvuejspractice.request.BoardRequest;
+import moon.codingmate.springvuejspractice.request.BoardCreate;
+import moon.codingmate.springvuejspractice.service.BoardService;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
@@ -13,7 +15,10 @@ import java.util.Map;
 
 @Slf4j
 @RestController
+@RequiredArgsConstructor
 public class BoardController {
+
+    private final BoardService boardService;
 
     @GetMapping("/boardGet")
     public String getBoardGet(@RequestParam String title, @RequestParam String content) {
@@ -22,8 +27,8 @@ public class BoardController {
     }
 
     @PostMapping("/board_bindingResult")
-    public Map<String, String> getBoard_BindingResult(@RequestBody @Valid BoardRequest boardRequest, BindingResult result) {
-        log.info("boardRequest={}", boardRequest);
+    public Map<String, String> getBoard_BindingResult(@RequestBody @Valid BoardCreate boardCreate, BindingResult result) {
+        log.info("boardRequest={}", boardCreate);
         if (result.hasErrors()) {
             List<FieldError> fieldErrors = result.getFieldErrors();
             FieldError firstFieldError = fieldErrors.get(0);
@@ -38,8 +43,15 @@ public class BoardController {
     }
 
     @PostMapping("/board")
-    public Map<String, String> getBoard(@RequestBody @Valid BoardRequest boardRequest) {
-        log.info("boardRequest={}", boardRequest);
+    public Map<String, String> getBoard(@RequestBody @Valid BoardCreate boardCreate) {
+        log.info("boardRequest={}", boardCreate);
         return Map.of();
     }
+
+    @PostMapping("/board/save")
+    public Map<String, String> saveBoard(@RequestBody @Valid BoardCreate request) {
+        boardService.write(request);
+        return Map.of();
+    }
+
 }
