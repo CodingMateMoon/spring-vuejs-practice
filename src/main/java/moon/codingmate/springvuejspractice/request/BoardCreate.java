@@ -1,17 +1,13 @@
 package moon.codingmate.springvuejspractice.request;
 
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 
 import javax.validation.constraints.NotBlank;
 
 @Getter
 @Setter
-@AllArgsConstructor
+//@AllArgsConstructor
 @NoArgsConstructor
 @ToString
 public class BoardCreate {
@@ -22,4 +18,10 @@ public class BoardCreate {
 
     @NotBlank(message = "내용을 입력해주세요")
     String content;
+
+    @Builder
+    public BoardCreate(String title, String content) {
+        this.title = title;
+        this.content = content;
+    }
 }

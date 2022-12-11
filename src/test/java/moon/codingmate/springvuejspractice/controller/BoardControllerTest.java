@@ -1,6 +1,8 @@
 package moon.codingmate.springvuejspractice.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import moon.codingmate.springvuejspractice.repository.BoardRepository;
+import moon.codingmate.springvuejspractice.request.BoardCreate;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +21,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @SpringBootTest
 class BoardControllerTest {
+
+    @Autowired
+    private ObjectMapper objectMapper;
 
     @Autowired
     private MockMvc mockMvc;
@@ -41,28 +46,37 @@ class BoardControllerTest {
     @Test
     @DisplayName("게시글을 조회합니다.")
     void getBoard() throws Exception {
+        BoardCreate boardCreate = BoardCreate.builder()
+                .title("성장")
+                .content("여정을 즐기고 시스템을 지키며 강화하기")
+                .build();
+
+        String json = objectMapper.writeValueAsString(boardCreate);
+        System.out.println(json);
+
         mockMvc.perform(MockMvcRequestBuilders.post("/board")
-//                        .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                         .contentType(MediaType.APPLICATION_JSON)
-//                        .param("title", "업데이트 공지")
-//                        .param("content", "내용")
-                       .content("{\"title\": \"제목입니다.\", \"content\": \"내용입니다.\"}"))
+                        .content(json))
                 .andExpect(status().isOk())
-                .andExpect(content().string("getBoard"))
+                .andExpect(content().string("{}"))
                 .andDo(MockMvcResultHandlers.print());
     }
 
     @Test
     @DisplayName("content null 게시글 조회 요청")
     void getBoard_nullContent() throws Exception {
+
+        BoardCreate boardCreate = BoardCreate.builder()
+                .title("성장")
+                .build();
+
+        String json = objectMapper.writeValueAsString(boardCreate);
+        System.out.println(json);
+
         mockMvc.perform(MockMvcRequestBuilders.post("/board_bindingResult")
-//                        .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                         .contentType(MediaType.APPLICATION_JSON)
-//                        .param("title", "업데이트 공지")
-//                        .param("content", "내용")
-                        .content("{\"title\": \"제목입니다.\", \"content\": \"\"}"))
+                        .content(json))
                 .andExpect(status().isOk())
-//                .andExpect(content().string("getBoard"))
                 .andExpect(jsonPath("$.content").value("내용을 입력해주세요"))
                 .andDo(MockMvcResultHandlers.print());
     }
@@ -70,27 +84,39 @@ class BoardControllerTest {
 
     @Test
     @DisplayName("/board 요청 시 title값은 필수입니다.")
-    void postTest() throws Exception {  // 가능하면 application/json을 권장합니다. (기존 application/x-www-form-urlencoded)
+    void postTest() throws Exception {
+
+        BoardCreate boardCreate = BoardCreate.builder()
+                .content("여정을 즐기고 시스템을 지키며 강화하자")
+                .build();
+
+        String json = objectMapper.writeValueAsString(boardCreate);
 
         //expected
         mockMvc.perform(MockMvcRequestBuilders.post("/board")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"title\": null, \"content\": \"내용입니다.\"}"))
+                        .content(json))
                 .andExpect(status().isBadRequest())
-//                .andExpect(jsonPath("$.title").value("제목을 입력해주세요"))
                 .andExpect(jsonPath("$.code").value("400"))
                 .andExpect(jsonPath("$.message").value("잘못된 요청입니다."))
-//                .andExpect(jsonPath("$.validation.title").value("타이틀을 입력해주세요."))
                 .andDo(MockMvcResultHandlers.print());
     }
 
     @Test
     @DisplayName("/board/update 요청 시 DB에 값을 저장합니다.")
     void updateBoardTest() throws Exception {
+
+        BoardCreate boardCreate = BoardCreate.builder()
+                .title("성장")
+                .content("enjoy the journey, protect and strengthen the system")
+                .build();
+
+        String json = objectMapper.writeValueAsString(boardCreate);
+
         //when
         mockMvc.perform(MockMvcRequestBuilders.post("/board/update")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content("{\"title\": \"제목입니다.\", \"content\": \"내용입니다.\"}"))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(json))
                 .andExpect(status().isOk())
                 .andDo(MockMvcResultHandlers.print());
 
