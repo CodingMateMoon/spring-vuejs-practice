@@ -48,8 +48,8 @@ public class BoardController {
         return Map.of();
     }
 
-    @PostMapping("/board/save")
-    public Map<String, String> saveBoard(@RequestBody @Valid BoardCreate request) {
+    @PostMapping("/board/update")
+    public Map<String, String> updateBoard(@RequestBody @Valid BoardCreate request) {
         boardService.write(request);
         return Map.of();
     }

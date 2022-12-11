@@ -1,9 +1,12 @@
 package moon.codingmate.springvuejspractice.controller;
 
+import moon.codingmate.springvuejspractice.repository.BoardRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -13,11 +16,15 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@WebMvcTest
+@AutoConfigureMockMvc
+@SpringBootTest
 class BoardControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
+
+    @Autowired
+    private BoardRepository boardRepository;
 
     @Test
     @DisplayName("게시글을 조회합니다.")
@@ -62,7 +69,7 @@ class BoardControllerTest {
 
 
     @Test
-    @DisplayName("/posts 요청 시 title값은 필수입니다.")
+    @DisplayName("/board 요청 시 title값은 필수입니다.")
     void postTest() throws Exception {  // 가능하면 application/json을 권장합니다. (기존 application/x-www-form-urlencoded)
 
         //expected
@@ -77,4 +84,16 @@ class BoardControllerTest {
                 .andDo(MockMvcResultHandlers.print());
     }
 
+    @Test
+    @DisplayName("/board/update 요청 시 DB에 값을 저장합니다.")
+    void updateBoardTest() throws Exception {
+        //when
+        mockMvc.perform(MockMvcRequestBuilders.post("/board/update")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"title\": \"제목입니다.\", \"content\": \"내용입니다.\"}"))
+                .andExpect(status().isOk())
+                .andDo(MockMvcResultHandlers.print());
+
+        assertEquals(1L, boardRepository.count());
+    }
 }
