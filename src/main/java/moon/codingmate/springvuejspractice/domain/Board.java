@@ -1,10 +1,13 @@
 package moon.codingmate.springvuejspractice.domain;
 
 import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
+@Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 public class Board {
@@ -18,6 +21,7 @@ public class Board {
     @Lob
     private String content;
 
+    @Builder
     public Board(String title, String content) {
         this.title = title;
         this.content = content;
