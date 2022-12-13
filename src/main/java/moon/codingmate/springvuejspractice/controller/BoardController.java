@@ -2,6 +2,7 @@ package moon.codingmate.springvuejspractice.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import moon.codingmate.springvuejspractice.domain.Board;
 import moon.codingmate.springvuejspractice.request.BoardCreate;
 import moon.codingmate.springvuejspractice.service.BoardService;
 import org.springframework.validation.BindingResult;
@@ -42,8 +43,8 @@ public class BoardController {
         return Map.of();
     }
 
-    @PostMapping("/board")
-    public Map<String, String> getBoard(@RequestBody @Valid BoardCreate boardCreate) {
+    @PostMapping("/post")
+    public Map<String, String> postTest(@RequestBody @Valid BoardCreate boardCreate) {
         log.info("boardRequest={}", boardCreate);
         return Map.of();
     }
@@ -52,6 +53,11 @@ public class BoardController {
     public Map<String, String> updateBoard(@RequestBody @Valid BoardCreate request) {
         boardService.write(request);
         return Map.of();
+    }
+
+    @GetMapping("/board/{boardId}")
+    public Board getBoard(@PathVariable(name = "boardId") Long id) {
+        return boardService.getBoard(id);
     }
 
 }

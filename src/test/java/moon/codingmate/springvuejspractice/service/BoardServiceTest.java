@@ -44,4 +44,23 @@ class BoardServiceTest {
         assertEquals("import thing", board.getTitle());
         assertEquals("not to give up but to stand up and reflect", board.getContent());
     }
+
+    @Test
+    @DisplayName("게시글 1개 조회")
+    void getBoard() {
+        // given
+        Board requestBoard = Board.builder()
+                .title("구글")
+                .content("codingmatemoon")
+                .build();
+        boardRepository.save(requestBoard);
+        // when
+        Board board = boardService.getBoard(requestBoard.getId());
+
+        // then
+        assertNotNull(board);
+        assertEquals(1L, boardRepository.count());
+        assertEquals("구글", board.getTitle());
+        assertEquals("codingmatemoon", board.getContent());
+    }
 }

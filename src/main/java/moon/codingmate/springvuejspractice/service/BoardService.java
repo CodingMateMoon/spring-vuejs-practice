@@ -16,7 +16,15 @@ public class BoardService {
 
     public void write(BoardCreate boardCreate) {
 
-        Board board = new Board(boardCreate.getTitle(), boardCreate.getContent());
+        Board board = Board.builder()
+                .title(boardCreate.getTitle())
+                .content(boardCreate.getContent())
+                .build();
         boardRepository.save(board);
+    }
+
+    public Board getBoard(Long id) {
+        return boardRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 글입니다."));
     }
 }

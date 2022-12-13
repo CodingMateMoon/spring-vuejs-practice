@@ -54,7 +54,7 @@ class BoardControllerTest {
         String json = objectMapper.writeValueAsString(boardCreate);
         System.out.println(json);
 
-        mockMvc.perform(MockMvcRequestBuilders.post("/board")
+        mockMvc.perform(MockMvcRequestBuilders.post("/post")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(json))
                 .andExpect(status().isOk())
@@ -83,7 +83,7 @@ class BoardControllerTest {
 
 
     @Test
-    @DisplayName("/board 요청 시 title값은 필수입니다.")
+    @DisplayName("/post 요청 시 title값은 필수입니다.")
     void postTest() throws Exception {
 
         BoardCreate boardCreate = BoardCreate.builder()
@@ -93,7 +93,7 @@ class BoardControllerTest {
         String json = objectMapper.writeValueAsString(boardCreate);
 
         //expected
-        mockMvc.perform(MockMvcRequestBuilders.post("/board")
+        mockMvc.perform(MockMvcRequestBuilders.post("/post")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(json))
                 .andExpect(status().isBadRequest())
