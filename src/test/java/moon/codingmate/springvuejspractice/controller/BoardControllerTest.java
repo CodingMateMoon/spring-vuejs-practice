@@ -1,6 +1,7 @@
 package moon.codingmate.springvuejspractice.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import moon.codingmate.springvuejspractice.domain.Board;
 import moon.codingmate.springvuejspractice.repository.BoardRepository;
 import moon.codingmate.springvuejspractice.request.BoardCreate;
 import org.junit.jupiter.api.DisplayName;
@@ -122,4 +123,25 @@ class BoardControllerTest {
 
         assertEquals(1L, boardRepository.count());
     }
+
+    @Test
+    @DisplayName("글 1개 조회")
+    void getBoardById() throws Exception {
+        // given
+        Board board = Board.builder()
+                .title("하루")
+                .content("하나씩")
+                .build();
+        boardRepository.save(board);
+
+        // expected
+        mockMvc.perform(MockMvcRequestBuilders.get("/board/{boardId}", board.getId())
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(board.getId()))
+                .andExpect(jsonPath("$.title").value("하루"))
+                .andExpect(jsonPath("$.content").value("하나씩"))
+                .andDo(MockMvcResultHandlers.print());
+    }
+
 }
