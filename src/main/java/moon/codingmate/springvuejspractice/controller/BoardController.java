@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import moon.codingmate.springvuejspractice.domain.Board;
 import moon.codingmate.springvuejspractice.request.BoardCreate;
+import moon.codingmate.springvuejspractice.response.BoardResponse;
 import moon.codingmate.springvuejspractice.service.BoardService;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -56,7 +57,7 @@ public class BoardController {
     }
 
     @GetMapping("/board/{boardId}")
-    public Board getBoard(@PathVariable(name = "boardId") Long id) {
+    public BoardResponse getBoard(@PathVariable(name = "boardId") Long id) {
         return boardService.getBoard(id);
     }
 

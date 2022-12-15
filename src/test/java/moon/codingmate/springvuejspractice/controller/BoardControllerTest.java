@@ -125,11 +125,11 @@ class BoardControllerTest {
     }
 
     @Test
-    @DisplayName("글 1개 조회")
+    @DisplayName("글 1개 조회- 제목 10자리까지만 반환")
     void getBoardById() throws Exception {
         // given
         Board board = Board.builder()
-                .title("하루")
+                .title("하루1234567890")
                 .content("하나씩")
                 .build();
         boardRepository.save(board);
@@ -139,7 +139,7 @@ class BoardControllerTest {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(board.getId()))
-                .andExpect(jsonPath("$.title").value("하루"))
+                .andExpect(jsonPath("$.title").value("하루12345678"))
                 .andExpect(jsonPath("$.content").value("하나씩"))
                 .andDo(MockMvcResultHandlers.print());
     }

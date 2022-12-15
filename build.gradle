@@ -17,7 +17,9 @@ repositories {
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa:2.7.5'
     implementation 'org.springframework.boot:spring-boot-starter-web:2.7.5'
-    implementation 'org.projectlombok:lombok:1.18.24'
+    //implementation 'org.projectlombok:lombok:1.18.24'
+    compileOnly 'org.projectlombok:lombok:1.18.24'
+    annotationProcessor('org.projectlombok:lombok:1.18.24')
     implementation 'org.springframework.boot:spring-boot-starter-validation:2.7.5'
     runtimeOnly 'com.h2database:h2:2.1.214'
     testImplementation 'org.springframework.boot:spring-boot-starter-test:2.7.5'
@@ -26,7 +28,7 @@ dependencies {
 group = 'moon.codingmate'
 version = '0.0.1-SNAPSHOT'
 description = 'spring-vuejs-practice'
-java.sourceCompatibility = JavaVersion.VERSION_1_9
+java.sourceCompatibility = JavaVersion.VERSION_11
 
 publishing {
     publications {
@@ -39,4 +41,8 @@ publishing {
 tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
 }
-targetCompatibility = JavaVersion.VERSION_1_9
+targetCompatibility = JavaVersion.VERSION_11
+
+test {
+    useJUnitPlatform()
+}

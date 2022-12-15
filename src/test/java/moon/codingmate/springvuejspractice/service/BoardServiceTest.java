@@ -3,6 +3,7 @@ package moon.codingmate.springvuejspractice.service;
 import moon.codingmate.springvuejspractice.domain.Board;
 import moon.codingmate.springvuejspractice.repository.BoardRepository;
 import moon.codingmate.springvuejspractice.request.BoardCreate;
+import moon.codingmate.springvuejspractice.response.BoardResponse;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -46,21 +47,21 @@ class BoardServiceTest {
     }
 
     @Test
-    @DisplayName("게시글 1개 조회")
+    @DisplayName("게시글 1개 조회 - 제목 10자리까지만 반환")
     void getBoard() {
         // given
         Board requestBoard = Board.builder()
-                .title("구글")
+                .title("구글1234567890")
                 .content("codingmatemoon")
                 .build();
         boardRepository.save(requestBoard);
         // when
-        Board board = boardService.getBoard(requestBoard.getId());
+        BoardResponse boardResponse = boardService.getBoard(requestBoard.getId());
 
         // then
-        assertNotNull(board);
+        assertNotNull(boardResponse);
         assertEquals(1L, boardRepository.count());
-        assertEquals("구글", board.getTitle());
-        assertEquals("codingmatemoon", board.getContent());
+        assertEquals("구글12345678", boardResponse.getTitle());
+        assertEquals("codingmatemoon", boardResponse.getContent());
     }
 }
