@@ -61,4 +61,9 @@ public class BoardController {
         return boardService.getBoard(id);
     }
 
+    @GetMapping("/boards")
+    public List<Board> getBoards() {
+        return boardService.getBoards();
+    }
+
 }

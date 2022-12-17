@@ -8,6 +8,8 @@ import moon.codingmate.springvuejspractice.request.BoardCreate;
 import moon.codingmate.springvuejspractice.response.BoardResponse;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -35,5 +37,9 @@ public class BoardService {
                 .build();
 
         return boardResponse;
+    }
+
+    public List<Board> getBoards() {
+        return boardRepository.findAll();
     }
 }

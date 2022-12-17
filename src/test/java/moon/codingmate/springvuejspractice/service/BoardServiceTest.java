@@ -10,8 +10,14 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
+
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 class BoardServiceTest {
@@ -63,5 +69,27 @@ class BoardServiceTest {
         assertEquals(1L, boardRepository.count());
         assertEquals("구글12345678", boardResponse.getTitle());
         assertEquals("codingmatemoon", boardResponse.getContent());
+    }
+
+    @Test
+    @DisplayName("글 여러 개 조회")
+    void getBoards() throws Exception {
+        // given
+        Board board1 = Board.builder()
+                .title("하루의끝")
+                .content("수고했어요")
+                .build();
+        boardRepository.save(board1);
+
+        Board board2 = Board.builder()
+                .title("피치피치")
+                .content("휙휙")
+                .build();
+        boardRepository.save(board2);
+
+        //when
+        List<Board> boards = boardService.getBoards();
+
+        assertEquals(2L, boards.size());
     }
 }
