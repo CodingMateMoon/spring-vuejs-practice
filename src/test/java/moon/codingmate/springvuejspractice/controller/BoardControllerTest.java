@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import moon.codingmate.springvuejspractice.domain.Board;
 import moon.codingmate.springvuejspractice.repository.BoardRepository;
 import moon.codingmate.springvuejspractice.request.BoardCreate;
+import org.hamcrest.Matchers;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
+import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -144,4 +146,27 @@ class BoardControllerTest {
                 .andDo(MockMvcResultHandlers.print());
     }
 
+    @Test
+    @DisplayName("글 여러 개 조회")
+    void getBoards() throws Exception {
+        // given
+        Board board1 = Board.builder()
+                .title("하루의끝")
+                .content("수고했어요")
+                .build();
+        boardRepository.save(board1);
+
+        Board board2 = Board.builder()
+                .title("피치피치")
+                .content("휙휙")
+                .build();
+        boardRepository.save(board2);
+        // expected
+        mockMvc.perform(MockMvcRequestBuilders.get("/boards")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()", is(2)))
+                .andExpect(jsonPath("$.[0].id").value(board1.getId()))
+                .andDo(MockMvcResultHandlers.print());
+    }
 }
