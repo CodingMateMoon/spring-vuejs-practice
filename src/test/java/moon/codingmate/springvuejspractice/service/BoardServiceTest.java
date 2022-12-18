@@ -88,7 +88,7 @@ class BoardServiceTest {
         boardRepository.save(board2);
 
         //when
-        List<Board> boards = boardService.getBoards();
+        List<BoardResponse> boards = boardService.getBoards();
 
         assertEquals(2L, boards.size());
     }

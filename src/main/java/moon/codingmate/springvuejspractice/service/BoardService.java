@@ -9,6 +9,7 @@ import moon.codingmate.springvuejspractice.response.BoardResponse;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -39,7 +40,14 @@ public class BoardService {
         return boardResponse;
     }
 
-    public List<Board> getBoards() {
-        return boardRepository.findAll();
+    public List<BoardResponse> getBoards() {
+        return boardRepository.findAll().stream()
+                .map(board -> BoardResponse.builder()
+                        .id(board.getId())
+                        .title(board.getTitle())
+                        .content(board.getContent())
+                        .build()
+                )
+                .collect(Collectors.toList());
     }
 }

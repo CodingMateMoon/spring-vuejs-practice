@@ -62,7 +62,7 @@ public class BoardController {
     }
 
     @GetMapping("/boards")
-    public List<Board> getBoards() {
+    public List<BoardResponse> getBoards() {
         return boardService.getBoards();
     }
 
