@@ -92,4 +92,23 @@ class BoardServiceTest {
 
         assertEquals(2L, boards.size());
     }
+
+    @Test
+    @DisplayName("게시글 여러 개 저장")
+    void saveBoards() {
+        // given
+        boardRepository.saveAll(List.of(Board.builder()
+                        .title("구글")
+                        .content("codingmatemoon")
+                        .build(),
+                Board.builder()
+                        .title("IBM")
+                        .content("UCLA")
+                        .build()));
+
+        // when
+        List<BoardResponse> boards = boardService.getBoards();
+        // then
+        assertEquals(2L, boards.size());
+    }
 }
