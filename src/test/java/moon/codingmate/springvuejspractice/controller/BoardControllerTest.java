@@ -169,4 +169,31 @@ class BoardControllerTest {
                 .andExpect(jsonPath("$.[0].id").value(board1.getId()))
                 .andDo(MockMvcResultHandlers.print());
     }
+
+    @Test
+    @DisplayName("글 여러 개 저장")
+    void saveBoards() throws Exception {
+        // given
+        Board board1 = boardRepository.save(Board.builder()
+                        .title("하루의끝")
+                        .content("수고했어요")
+                        .build());
+
+        Board board2 = boardRepository.save(Board.builder()
+                        .title("피치피치")
+                        .content("휙휙")
+                        .build());
+        // expected
+        mockMvc.perform(MockMvcRequestBuilders.get("/boards")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()", is(2)))
+                .andExpect(jsonPath("$.[0].id").value(board1.getId()))
+                .andExpect(jsonPath("$.[0].title").value("하루의끝"))
+                .andExpect(jsonPath("$[0].content").value("수고했어요"))
+                .andExpect(jsonPath("$.[1].id").value(board2.getId()))
+                .andExpect(jsonPath("$.[1].title").value("피치피치"))
+                .andExpect(jsonPath("$.[1].content").value("휙휙"))
+                .andDo(MockMvcResultHandlers.print());
+    }
 }
