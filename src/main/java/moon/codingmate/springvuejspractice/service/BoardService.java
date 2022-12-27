@@ -6,6 +6,8 @@ import moon.codingmate.springvuejspractice.domain.Board;
 import moon.codingmate.springvuejspractice.repository.BoardRepository;
 import moon.codingmate.springvuejspractice.request.BoardCreate;
 import moon.codingmate.springvuejspractice.response.BoardResponse;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -44,6 +46,13 @@ public class BoardService {
         return boardRepository.findAll().stream()
                 .map(BoardResponse::new
                 )
+                .collect(Collectors.toList());
+    }
+
+    public List<BoardResponse> getBoards(int page) {
+        Pageable pageable = PageRequest.of(page, 5);
+        return boardRepository.findAll(pageable).stream()
+                .map(board -> new BoardResponse(board))
                 .collect(Collectors.toList());
     }
 }

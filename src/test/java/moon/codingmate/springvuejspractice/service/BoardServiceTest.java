@@ -15,6 +15,8 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -111,4 +113,24 @@ class BoardServiceTest {
         // then
         assertEquals(2L, boards.size());
     }
+
+    @Test
+    @DisplayName("글 1페이지 조회")
+    void getBoardPage() {
+        // given
+        List<Board> requestBoards = IntStream.range(1, 31)
+                .mapToObj(i -> Board.builder()
+                        .title("google " + i)
+                        .content("codingmatemoon " + i)
+                        .build())
+                .collect(Collectors.toList());
+        boardRepository.saveAll(requestBoards);
+        // when
+        List<BoardResponse> boards = boardService.getBoards(0);
+
+        // then
+        assertEquals(5L, boards.size());
+        assertEquals("google 1",boards.get(0).getTitle());
+    }
+
 }
