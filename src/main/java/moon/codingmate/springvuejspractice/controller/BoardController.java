@@ -6,6 +6,7 @@ import moon.codingmate.springvuejspractice.domain.Board;
 import moon.codingmate.springvuejspractice.request.BoardCreate;
 import moon.codingmate.springvuejspractice.response.BoardResponse;
 import moon.codingmate.springvuejspractice.service.BoardService;
+import org.springframework.data.domain.Pageable;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
@@ -61,9 +62,14 @@ public class BoardController {
         return boardService.getBoard(id);
     }
 
+//    @GetMapping("/boards")
+//    public List<BoardResponse> getBoards() {
+//        return boardService.getBoards();
+//    }
+
     @GetMapping("/boards")
-    public List<BoardResponse> getBoards() {
-        return boardService.getBoards();
+    public List<BoardResponse> getBoards(Pageable pageable) {
+        return boardService.getBoards(pageable);
     }
 
 }

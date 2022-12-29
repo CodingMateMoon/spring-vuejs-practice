@@ -17,6 +17,10 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+
 import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -194,6 +198,25 @@ class BoardControllerTest {
                 .andExpect(jsonPath("$.[1].id").value(board2.getId()))
                 .andExpect(jsonPath("$.[1].title").value("피치피치"))
                 .andExpect(jsonPath("$.[1].content").value("휙휙"))
+                .andDo(MockMvcResultHandlers.print());
+    }
+
+    @Test
+    @DisplayName("페이지 당 글 여러 개 조회")
+    void getBoardsAboutPage() throws Exception {
+        // given
+        List<Board> requestBoards = IntStream.range(1, 31)
+                .mapToObj(i -> Board.builder()
+                        .title("google " + i)
+                        .content("codingmate " + i)
+                        .build())
+                .collect(Collectors.toList());
+        boardRepository.saveAll(requestBoards);
+
+        //expected
+        mockMvc.perform(MockMvcRequestBuilders.get("/boards?page=1&sort=id,desc&size=15")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
                 .andDo(MockMvcResultHandlers.print());
     }
 }

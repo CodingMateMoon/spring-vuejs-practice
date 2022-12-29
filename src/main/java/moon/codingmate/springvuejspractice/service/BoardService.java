@@ -55,4 +55,10 @@ public class BoardService {
                 .map(board -> new BoardResponse(board))
                 .collect(Collectors.toList());
     }
+
+    public List<BoardResponse> getBoards(Pageable pageable) {
+        return boardRepository.findAll(pageable).stream()
+                .map(BoardResponse::new)
+                .collect(Collectors.toList());
+    }
 }
