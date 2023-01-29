@@ -61,4 +61,10 @@ public class BoardService {
                 .map(BoardResponse::new)
                 .collect(Collectors.toList());
     }
+
+    public List<BoardResponse> getBoardsWithJPAQueryFactory(Pageable pageable) {
+        return boardRepository.getList(1).stream()
+                .map(BoardResponse::new)
+                .collect(Collectors.toList());
+    }
 }

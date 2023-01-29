@@ -10,6 +10,9 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
@@ -130,6 +133,25 @@ class BoardServiceTest {
 
         // then
         assertEquals(5L, boards.size());
+        assertEquals("google 1",boards.get(0).getTitle());
+    }
+
+    @Test
+    @DisplayName("Pageable 활용 글 1페이지 조회")
+    void getBoardWithJPAQueryFactory() {
+        // given
+        List<Board> requestBoards = IntStream.range(1, 31)
+                .mapToObj(i -> Board.builder()
+                        .title("google " + i)
+                        .content("codingmatemoon " + i)
+                        .build())
+                .collect(Collectors.toList());
+        boardRepository.saveAll(requestBoards);
+        Pageable pageable = PageRequest.of(0, 5, Sort.Direction.DESC, "id");
+        // when
+        List<BoardResponse> boards = boardService.getBoardsWithJPAQueryFactory(pageable);
+        // then
+        assertEquals(10L, boards.size());
         assertEquals("google 1",boards.get(0).getTitle());
     }
 
